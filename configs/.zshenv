@@ -5,6 +5,12 @@
 # RUST
 export RUSTFLAGS="-Ctarget-cpu=native"
 
+# Language
+export LANG='en_US.UTF-8'
+export LANGUAGE=$LANG
+export LC_ALL=$LANG
+export LC_CTYPE=$LANG
+
 # Editors
 export VISUAL=hx
 export EDITOR="$VISUAL"

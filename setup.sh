@@ -4,6 +4,14 @@
 # Install some basic requirements for my set up
 #
 
+the_ppa=kubuntu-ppa/backports
+
+sudo apt update && sudo apt upgrade
+if ! grep -q "^deb .*$the_ppa" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
+  sudo add-apt-repository ppa:kubuntu-ppa/backports 
+fi
+sudo apt full-upgrade
+
 # Check if Git is installed
 if ! [ -x "$(command -v git)" ]; then
   echo 'Git is not installed. Installing Git...'
@@ -15,7 +23,6 @@ fi
 if ! [ -x "$(command -v hx)" ]; then
   echo 'Helix is not installed. Installing Helix...'
   sudo add-apt-repository ppa:maveonair/helix-editor
-  sudo apt update
   sudo apt install helix
 fi
 
@@ -71,7 +78,7 @@ echo 'Done!'
 #
 # Set Zsh as the default shell lastly as it will require new shell
 #
-if ! [ "$SHELL" = "$(which zsh)" ]; then
+if ! [ "$SHELL" = "/usr/bin/zsh" ]; then
   echo 'Setting Zsh as the default shell...'
-  sudo chsh -s "$(which zsh)" "$USER"
+  sudo chsh -s "/usr/bin/zsh" "$USER"
 fi
