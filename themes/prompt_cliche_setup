@@ -1,0 +1,105 @@
+# Cliche
+# MIT License
+# Inspired by Pure, by Sindre Sorhus
+
+# For my own and others sanity
+# git:
+# %b => current branch
+# %a => current action (rebase/merge)
+# prompt:
+# %F => color dict
+# %f => reset color
+# %~ => current path
+# %* => time
+# %n => username
+# %m => shortname host
+# %(?..) => prompt conditional - %(condition.true.false)
+# terminal codes:
+# \e7   => save cursor position
+# \e[2A => move cursor 2 lines up
+# \e[1G => go to position 1 in terminal
+# \e8   => restore cursor position
+# \e[K  => clears everything after the cursor on the current line
+# \e[2K => clear everything on the current line
+
+prompt_cliche_set_title() {
+    # emacs terminal does not support setting the title
+    (( ${+EMACS} )) && return
+    # don't set title over serial console
+    [ -z "${TTY##/dev/ttyS[0-9]*}" ] && return
+
+    # set atomically so that it works with XTRACE
+    printf '%s%s%s' $'\e]0;' "${USER}@${HOST} ${1}" $'\a'
+}
+
+prompt_cliche_preexec() {
+    # show the current dir and executing command in the title when a process is active
+    prompt_cliche_set_title "$PWD:t: $2"
+
+    # don't allow Python virtualenv to update the prompt; set it to 12 (same
+    # magic number as psvar), if untouched by the user, to indicate that we
+    # modified it.
+    export VIRTUAL_ENV_DISABLE_PROMPT=${VIRTUAL_ENV_DISABLE_PROMPT:-12}
+}
+
+prompt_cliche_render_prompt() {
+    local _venv='%(12V.%F{242}(%12v)%f .)'
+    local _user='%F{cyan}%n%f'
+    local _host='%F{green}%m%f'
+    local _location='%F{yellow}%~%f'
+    local _symbol='%F{yellow}❱%f '
+    # $prompt_newline is set by promptinit
+
+    # username in red if root
+    [ "$UID" -eq 0 ] && _user='%F{red}%n%f'
+
+    PROMPT="${_venv}${_user}@${_host} in ${_location}${vcs_info_msg_0_}"
+    PROMPT+="${prompt_newline}${_symbol}"
+
+    # if there's an error code; display it on the right
+    RPROMPT='%(?..%F{red}%B%? !%b%f)'
+}
+
+prompt_cliche_precmd() {
+    # show the full path in the title
+    prompt_cliche_set_title "${PWD/$HOME/~}"
+
+    # Check if we should display the virtual env, we use a sufficiently high
+    # index of psvar (12) here to avoid collisions with user defined entries.
+    psvar[12]=
+
+    # When VIRTUAL_ENV_DISABLE_PROMPT is empty, it was unset by the user and
+    # we should take back control.
+    if [[ -n $VIRTUAL_ENV ]] && [[ -z $VIRTUAL_ENV_DISABLE_PROMPT || $VIRTUAL_ENV_DISABLE_PROMPT = 12 ]]; then
+        psvar[12]="${VIRTUAL_ENV:t}"
+        export VIRTUAL_ENV_DISABLE_PROMPT=12
+    fi
+
+    prompt_cliche_render_prompt
+}
+
+prompt_cliche_setup() {
+    # Prevent percentage showing up if output doesn't end with a newline.
+    export PROMPT_EOL_MARK=''
+
+    zmodload zsh/datetime
+    zmodload zsh/zle
+    zmodload zsh/parameter
+
+    autoload -Uz add-zsh-hook
+    autoload -Uz vcs_info
+
+    # configure git support
+    zstyle ':vcs_info:*' enable git
+    zstyle ':vcs_info:*' check-for-changes true
+    zstyle ':vcs_info:*' formats ' on %s:%F{magenta}%b%f%c%u'
+    zstyle ':vcs_info:*' actionformats ' on %F{magenta}%b%f%c%u %F{yellow}(%a)%f'
+    zstyle ':vcs_info:*' stagedstr '%F{green}+%f'
+    zstyle ':vcs_info:*' unstagedstr '%F{green}!%f'
+
+    add-zsh-hook precmd vcs_info
+    add-zsh-hook precmd prompt_cliche_precmd
+    add-zsh-hook preexec prompt_cliche_preexec
+}
+
+prompt_cliche_setup "$@"

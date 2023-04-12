@@ -1,0 +1,106 @@
+#
+# theme
+#
+
+# load theme by way of promptinit
+autoload -U promptinit; promptinit
+prompt cliche
+
+
+#
+# history
+#
+setopt EXTENDED_HISTORY          # write the history file in the ':start:elapsed;command' format.
+setopt SHARE_HISTORY             # share history between all sessions.
+setopt HIST_EXPIRE_DUPS_FIRST    # expire a duplicate event first when trimming history.
+setopt HIST_IGNORE_DUPS          # do not record an event that was just recorded again.
+setopt HIST_IGNORE_ALL_DUPS      # delete an old recorded event if a new event is a duplicate.
+setopt HIST_FIND_NO_DUPS         # do not display a previously found event.
+setopt HIST_IGNORE_SPACE         # do not record an event starting with a space.
+setopt HIST_SAVE_NO_DUPS         # do not write a duplicate event to the history file.
+setopt HIST_VERIFY               # do not execute immediately upon history expansion.
+setopt HIST_BEEP                 # beep when accessing non-existent history.
+
+HISTFILE="${HOME}/.zhistory"
+HISTSIZE=10000                   # max events to save in the internal history.
+SAVEHIST=10000                   # max events to save in the history file.
+
+# enable substring search through history
+source ${HOME}/.zfunctions/search_zsh_history.sh
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey "$terminfo[kcuu1]" history-substring-search-up
+bindkey "$terminfo[kcud1]" history-substring-search-down
+
+#
+# tab completion
+#
+setopt COMPLETE_IN_WORD    # Complete from both ends of a word.
+setopt ALWAYS_TO_END       # Move cursor to the end of a completed word.
+setopt PATH_DIRS           # Perform path search even on command names with slashes.
+setopt AUTO_MENU           # Show completion menu on a successive tab press.
+setopt AUTO_LIST           # Automatically list choices on ambiguous completion.
+setopt AUTO_PARAM_SLASH    # If completed parameter is a directory, add a trailing slash.
+setopt EXTENDED_GLOB       # Needed for file modification glob modifiers with compinit
+unsetopt MENU_COMPLETE     # Do not autoselect the first completion entry.
+unsetopt FLOW_CONTROL      # Disable start/stop characters in shell editor.
+zstyle ':completion:*' menu select # enable menu support
+zstyle ':completion:*' matcher-list '' \
+  'm:{a-z\-}={A-Z\_}' \
+  'r:[^[:alpha:]]||[[:alpha:]]=** r:|=* m:{a-z\-}={A-Z\_}' \
+  'r:|?=** m:{a-z\-}={A-Z\_}' # enable fuzzy matching
+bindkey '^[[Z' reverse-menu-complete
+
+# Load and initialize the completion system ignoring insecure directories with a
+# cache time of 20 hours, so it should almost always regenerate the first time a
+# shell is opened each day.
+autoload -Uz compinit
+_comp_files=(${ZDOTDIR:-$HOME}/.zcompdump(Nm-20))
+if (( $#_comp_files )); then
+  compinit -i -C
+else
+  compinit -i
+fi
+unset _comp_files
+
+# rehash automatically
+# TODO: this may adversely affect performance over NFS; examine
+zstyle ':completion:*' rehash true
+
+#
+# aliases
+#
+alias rm='rm -i'
+alias cp='cp -i --verbose'
+alias mv='mv -i'
+alias ll='ls -l'
+alias lsa='ls -a'
+alias lla='ll -a'
+alias mricrogl='MRIcroGL'
+
+#
+# color
+#
+if (( $+commands[dircolors] )) ; then  # GNU (likely)
+    # set LS_COLORS
+    eval `dircolors -b`
+
+    alias diff='diff --color=auto'
+    alias grep='grep --color=auto'
+    alias ls='ls --color=auto'
+
+    # colorize tab completion menu
+    zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+else  # macOS/BSD (likely)
+    export CLICOLOR=1
+    export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
+
+    # colorize tab completion menu
+    zstyle ':completion:*' list-colors ${(s.:.)LSCOLORS}
+fi
+
+
+#
+# Other
+#
+unsetopt CLOBBER            # don't overwrite existing files with > and >>

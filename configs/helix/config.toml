@@ -1,0 +1,17 @@
+theme="gruvbox"
+
+[editor]
+line-number = "relative"
+mouse = false
+true-color = true
+rulers = [80]
+
+[editor.file-picker]
+hidden = false
+parents = true
+git-ignore = true
+ignore = true
+git-global = true
+
+[keys.normal]
+ins = "insert_mode"
