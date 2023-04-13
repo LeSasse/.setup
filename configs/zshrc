@@ -104,3 +104,7 @@ fi
 # Other
 #
 unsetopt CLOBBER            # don't overwrite existing files with > and >>
+
+if [ -d "${PYTHON_BASE}" ]; then
+	source ${PYTHON_BASE}/bin/activate
+fi

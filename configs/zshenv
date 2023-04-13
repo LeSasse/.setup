@@ -5,6 +5,9 @@
 # RUST
 export RUSTFLAGS="-Ctarget-cpu=native"
 
+# Python
+export $PYTHON_BASE="${HOME}/.venvs/base"
+
 # Language
 export LANG='en_US.UTF-8'
 export LANGUAGE=$LANG
