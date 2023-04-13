@@ -24,6 +24,11 @@ sudo add-apt-repository ppa:maveonair/helix-editor
 sudo apt update
 sudo apt install helix
 ```
+## Clone this repo:
+```sh
+git clone https://github.com/LeSasse/.setup.git
+cd .setup
+```
 ## Set up my dotfiles:
 ```sh
 ./scripts/setup_dotfiles.sh 
