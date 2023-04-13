@@ -30,6 +30,10 @@ path=(
     $path
 )
 
+if [ -d /usr/local/MRIcroGL ]; then
+    export PATH="/usr/local/MRIcroGL:${PATH}"
+fi
+
 # make our theme discoverable
 export FPATH="${HOME}/.zthemes:${FPATH}"
 

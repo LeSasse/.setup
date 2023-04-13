@@ -4,7 +4,7 @@
 base=$(basename $PWD)
 if [ "${base}" = ".setup" ]; then
   configs_path=$(realpath configs)
-elif [ "${base}" = "scripts" ]
+elif [ "${base}" = "scripts" ]; then
   configs_path=$(realpath ../configs)
 fi
 
@@ -16,7 +16,7 @@ if ! [ -x "$(command -v MRIcroGL)" ]; then
   cd ${TMP_DIR}
   curl -fLO https://github.com/rordenlab/MRIcroGL/releases/latest/download/MRIcroGL_linux.zip
   unzip MRIcroGL_linux.zip
-  cp ${base}/mricrogl_startup.py MRIcroGL/Resources/script/.
+  cp ${configs_path}/mricrogl_startup.py MRIcroGL/Resources/script/.
   sudo cp -r -i MRIcroGL /usr/local/.
   cd ${START_DIR}
   rm -rf ${TMP_DIR}
