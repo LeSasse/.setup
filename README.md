@@ -42,5 +42,5 @@ Remember to start a new terminal at this point
 ```
 ## Install MRIcroGL
 ```sh
-./scripts/install_mricrogl.sh
+./scripts/setup_mricrogl.sh
 ```
