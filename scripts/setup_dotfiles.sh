@@ -8,7 +8,7 @@
 base=$(basename $PWD)
 if [ "${base}" = ".setup" ]; then
   configs_path=$(realpath configs)
-elif [ "${base}" = "scripts" ]
+elif [ "${base}" = "scripts" ]; then
   configs_path=$(realpath ../configs)
 fi
 

@@ -4,7 +4,7 @@
 base=$(basename $PWD)
 if [ "${base}" = ".setup" ]; then
   configs_path=$(realpath configs)
-elif [ "${base}" = "scripts" ]
+elif [ "${base}" = "scripts" ]; then
   configs_path=$(realpath ../configs)
 fi
 
@@ -13,4 +13,4 @@ mkdir -p ${HOME}/.venvs
 python3 -m venv ${HOME}/.venvs/base
 source ${HOME}/.venvs/base/bin/activate
 pip install -U pip
-pip intall -r ${configs_path}/python_base.txt
+pip install -r ${configs_path}/python_base.txt
