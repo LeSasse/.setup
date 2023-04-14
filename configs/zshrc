@@ -80,7 +80,7 @@ alias mricrogl='MRIcroGL'
 
 if [ "$(command -v helix)" ]; then
 	alias hx='helix'
-	alias "sudo hx"="sudo helix"
+	alias "shx"="sudo helix"
 fi
 #
 # color
