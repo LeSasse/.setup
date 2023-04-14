@@ -8,8 +8,10 @@
 base=$(basename $PWD)
 if [ "${base}" = ".setup" ]; then
   configs_path=$(realpath configs)
+  functions_path=$(realpath zfunctions)
 elif [ "${base}" = "scripts" ]; then
   configs_path=$(realpath ../configs)
+  functions_path=$(realpath ../zfunctions)
 fi
 
 # make .zfunctions dir if not there yet
@@ -18,7 +20,7 @@ mkdir -p ${HOME}/.zthemes
 
 mkdir -p ${HOME}/.config/helix
 
-ln -svf "$(realpath zfunctions)"/search_zsh_history.sh ${HOME}/.zfunctions/search_zsh_history.sh
+ln -svf ${functions_path}/search_zsh_history.sh ${HOME}/.zfunctions/search_zsh_history.sh
 
 ln -svf ${configs_path}/zlogin ${HOME}/.zlogin
 ln -svf ${configs_path}/zshenv ${HOME}/.zshenv

@@ -77,8 +77,11 @@ alias ll='ls -l'
 alias lsa='ls -a'
 alias lla='ll -a'
 alias mricrogl='MRIcroGL'
-alias hx='helix'
 
+if [ "$(command -v helix)" ]; then
+	alias hx='helix'
+	alias "sudo hx"="sudo helix"
+fi
 #
 # color
 #

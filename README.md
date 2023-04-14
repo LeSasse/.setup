@@ -21,7 +21,6 @@ sudo apt-get install -y git zsh
 I like using [helix](https://helix-editor.com/) as a text editor:
 ```
 sudo add-apt-repository ppa:maveonair/helix-editor
-sudo apt update
 sudo apt install helix
 ```
 ## Clone this repo:
