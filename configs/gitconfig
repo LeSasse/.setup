@@ -1,0 +1,30 @@
+[push]
+	default = current
+[color]
+	status = auto
+	branch = auto
+[core]
+	whitespace = trailing-space,space-before-tab
+	editor = hx
+[apply]
+	whitespace = fix
+[alias]
+	co = checkout
+	cob = checkout -b
+	st = status
+	unstage = reset -q HEAD --
+[user]
+	email = l.sasse@fz-juelich.de
+	name = LeSasse
+[core]
+    pager = delta
+[interactive]
+    diffFilter = delta --color-only
+[delta]
+    navigate = true    # use n and N to move between diff sections
+    light = false      # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
+    side-by-side = true
+[merge]
+    conflictstyle = diff3
+[diff]
+    colorMoved = default

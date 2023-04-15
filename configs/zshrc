@@ -25,25 +25,6 @@ HISTFILE="${HOME}/.zhistory"
 HISTSIZE=10000                   # max events to save in the internal history.
 SAVEHIST=10000                   # max events to save in the history file.
 
-# enable substring search through history
-source ${HOME}/.zfunctions/search_zsh_history.sh
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-bindkey "$terminfo[kcuu1]" history-substring-search-up
-bindkey "$terminfo[kcud1]" history-substring-search-down
-
-# autosuggestions
-autosuggestions=/usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-if [ -f ${autosuggestions} ]; then
-	source ${autosuggestions}
-fi
-
-# syntax highlighting
-syntax_highlighting=/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-if [ -f ${syntax_highlighting} ]; then
-	source ${syntax_highlighting}
-fi
-
 #
 # tab completion
 #
@@ -124,3 +105,23 @@ unsetopt CLOBBER            # don't overwrite existing files with > and >>
 if [ -d "${PYTHON_BASE}" ]; then
 	source ${PYTHON_BASE}/bin/activate
 fi
+
+# enable substring search through history
+source ${HOME}/.zfunctions/search_zsh_history.sh
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey "$terminfo[kcuu1]" history-substring-search-up
+bindkey "$terminfo[kcud1]" history-substring-search-down
+
+# autosuggestions
+autosuggestions=/usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+if [ -f ${autosuggestions} ]; then
+	source ${autosuggestions}
+fi
+
+# syntax highlighting
+syntax_highlighting=/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+if [ -f ${syntax_highlighting} ]; then
+	source ${syntax_highlighting}
+fi
+
