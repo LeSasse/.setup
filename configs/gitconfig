@@ -13,9 +13,6 @@
 	cob = checkout -b
 	st = status
 	unstage = reset -q HEAD --
-[user]
-	email = l.sasse@fz-juelich.de
-	name = LeSasse
 [core]
     pager = delta
 [interactive]
