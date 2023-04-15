@@ -33,8 +33,8 @@ ln -svf ${themes_path}/prompt_cliche_setup ${HOME}/.zthemes/prompt_cliche_setup
 ln -svf ${configs_path}/gitconfig ${HOME}/.gitconfig
 read -p "What is your git username?" gituser
 read -p "What is your git e-mail address?" gitemail
-git config user.name ${gituser}
-git config user.email ${gitemail}
+git config --global user.name "${gituser}"
+git config --global user.email "${gitemail}"
 
 # helix set up
 ln -svf ${configs_path}/helix/config.toml ${HOME}/.config/helix/config.toml
