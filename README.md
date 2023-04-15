@@ -52,3 +52,5 @@ Remember to start a new terminal at this point
 ```sh
 ./scripts/setup_mricrogl.sh
 ```
+## Install delta
+For nicer git, diff, and grep output install rust-based [delta](https://github.com/dandavison/delta)
