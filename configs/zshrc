@@ -32,6 +32,18 @@ bindkey '^[[B' history-substring-search-down
 bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down
 
+# autosuggestions
+autosuggestions=/usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+if [ -f ${autosuggestions} ]; then
+	source ${autosuggestions}
+fi
+
+# syntax highlighting
+syntax_highlighting=/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+if [ -f ${syntax_highlighting} ]; then
+	source ${syntax_highlighting}
+fi
+
 #
 # tab completion
 #

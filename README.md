@@ -17,6 +17,10 @@ sudo apt full-upgrade
 ```sh
 sudo apt-get install -y git zsh
 ```
+## Optional dependencies I like for zsh:
+```
+sudo apt-get install zsh-autosuggestions zsh-syntax-highlighting
+```
 ## Install helix
 I like using [helix](https://helix-editor.com/) as a text editor:
 ```
