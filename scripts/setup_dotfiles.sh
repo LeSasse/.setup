@@ -40,5 +40,7 @@ git config --global user.email "${gitemail}"
 ln -svf ${configs_path}/helix/config.toml ${HOME}/.config/helix/config.toml
 ln -svf ${configs_path}/helix/languages.toml ${HOME}/.config/helix/languages.toml
 
+# emacs
+ln -svf ${configs_path}/emacs ${HOME}/.emacs
 
 echo 'Done!'

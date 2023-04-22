@@ -25,3 +25,6 @@
     conflictstyle = diff3
 [diff]
     colorMoved = default
+[user]
+	name = LeSasse
+	email = l.sasse@fz-juelich.de
