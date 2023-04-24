@@ -6,15 +6,38 @@
 	     '("melpa" . "https://melpa.org/packages/"))
 
 (package-initialize)
+(windmove-default-keybindings)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 
+(use-package default-text-scale
+  :ensure t)
+
 (use-package try
   :ensure t)
 
+(use-package resize-window
+  :ensure t)
+(global-set-key (kbd "C-c ,") 'resize-window)
+
+(use-package evil
+  :ensure t)
+
+(use-package affe
+  :ensure t)
+
+(use-package neotree
+  :ensure t)
+
+(global-set-key [f8] 'neotree-toggle)
+(neotree-toggle)
+
 (use-package gruvbox-theme
+  :ensure t)
+
+(use-package zoom
   :ensure t)
 
 (custom-set-variables
@@ -25,7 +48,8 @@
  '(custom-enabled-themes '(gruvbox-dark-hard))
  '(custom-safe-themes
    '("d80952c58cf1b06d936b1392c38230b74ae1a2a6729594770762dc0779ac66b7" "72ed8b6bffe0bfa8d097810649fd57d2b598deef47c992920aef8b5d9599eefe" default))
- '(package-selected-packages '(jedi gruvbox-theme org-bullets which-key try use-package))
+ '(package-selected-packages
+   '(ein jedi gruvbox-theme org-bullets which-key try use-package))
  '(warning-suppress-types
    '(((defvaralias losing-value python-shell-completion-module-string-code))
      ((defvaralias losing-value python-shell-completion-module-string-code))
@@ -37,6 +61,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+(use-package ein
+  :ensure t)
 
 (use-package which-key
   :ensure t
@@ -54,14 +81,14 @@
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
-(split-window-right)
-
 ;; jedi
 (use-package jedi
   :ensure t
   :config
   (add-hook 'python-mode-hook 'jedi:setup))
 
+
+;; IPython set up
 (setq jedi:complete-on-dot t)                 ; optional
 
 (setq
@@ -75,3 +102,8 @@
  "';'.join(module_completion('''%s'''))\n"
  python-shell-completion-string-code
  "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
+
+
+(defalias 'list-buffers 'ibuffer)
+
+(setq projectile-mode-line "Projectile")
