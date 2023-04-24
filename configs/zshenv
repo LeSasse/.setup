@@ -48,5 +48,3 @@ export CLICHE_GIT_CHECK_FOR_CHANGES=staged
 
 # Python
 export PYTHON_BASE="${HOME}/.venvs/base"
-
-[ $TERM = "dumb" ] && unsetopt zle && PS1='$ '

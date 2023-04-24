@@ -126,3 +126,10 @@ if [ -f ${syntax_highlighting} ]; then
 	source ${syntax_highlighting}
 fi
 
+
+# fix shell in emacs?
+#if [[ $TERM = dumb ]]; then
+#   prompt walters
+#   unsetopt zle
+#   unset zle_bracketed_paste
+#fi
