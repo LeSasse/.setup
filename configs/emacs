@@ -107,3 +107,15 @@
 (global-display-fill-column-indicator-mode)
 
 (setq projectile-mode-line "Projectile")
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)))
+
+(use-package auto-complete
+  :ensure t
+  :init
+  (progn
+    (ac-config-default)
+    (global-auto-complete-mode 1)
+    ))
