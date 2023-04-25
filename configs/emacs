@@ -1,6 +1,18 @@
-;;(setq inhibit-startup-message t)
+;;
+(setq inhibit-startup-message t)
+(tool-bar-mode -1)                       ;; no tool bar
+(horizontal-scroll-bar-mode -1)          ;; no horizontal toolbar
+(scroll-bar-mode -1 )                    ;; no scroll bar
+(global-display-line-numbers-mode 1)     ;; line numbers
+(blink-cursor-mode -1)  
+
+
 
 (require 'package)
+;; add melpa stable
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/"))
+
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives
 	     '("melpa" . "https://melpa.org/packages/"))
@@ -15,11 +27,29 @@
 (use-package try
   :ensure t)
 
+(use-package magit
+  :ensure t
+  :pin melpa-stable)
+
+;; Format code as per black code formatter rules
+(use-package blacken
+  :ensure t
+  :delight
+  :hook (python-mode . blacken-mode)
+  :custom (blacken-line-length 79))
+
+
 (use-package vterm
     :ensure t)
 
 (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode -1)))
 (add-hook 'vterm-mode-hook (lambda () (display-fill-column-indicator-mode -1)))
+
+;; 'ivy'-enhanced versions of common emacs commands
+(use-package counsel
+  :ensure t
+  :bind (("M-x" . counsel-M-x)
+         ("C-x C-f". counsel-find-file)))
 
 (use-package resize-window
   :ensure t)
@@ -29,40 +59,43 @@
   :ensure t)
 
 (global-set-key [f8] 'neotree-toggle)
-(neotree-toggle)
 
-(use-package gruvbox-theme
-  :ensure t)
+(set-frame-font "JetBrains Mono 14")
 
 (use-package zoom
   :ensure t)
 
+(use-package color-theme-sanityinc-tomorrow
+  :ensure t)
 
-(use-package doom-themes
-  :ensure t
-  :config
-  ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-one t)
+;; (use-package doom-themes
+;;   :ensure t
+;;   :config
+;;   ;; Global settings (defaults)
+;;   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+;;         doom-themes-enable-italic t) ; if nil, italics is universally disabled
+;;   (load-theme 'doom-gruvbox t)
 
-  ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
-  ;; Enable custom neotree theme (all-the-icons must be installed!)
-  (doom-themes-neotree-config)
-  ;; or for treemacs users
-  (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
-  (doom-themes-treemacs-config)
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config))
+;;   ;; Enable flashing mode-line on errors
+;;   (doom-themes-visual-bell-config)
+;;   ;; Enable custom neotree theme (all-the-icons must be installed!)
+;;   (doom-themes-neotree-config)
+;;   ;; or for treemacs users
+;;   (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
+;;   (doom-themes-treemacs-config)
+;;   ;; Corrects (and improves) org-mode's native fontification.
+;;   (doom-themes-org-config))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-enabled-themes '(sanityinc-tomorrow-night))
+ '(custom-safe-themes
+   '("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" default))
  '(package-selected-packages
-   '(linum-relative ein jedi gruvbox-theme org-bullets which-key try use-package))
+   '(lsp-mode magit color-theme-sanityinc-tomorrow linum-relative gruvbox-theme org-bullets which-key try use-package))
  '(warning-suppress-types
    '((comp)
      ((defvaralias losing-value python-shell-completion-module-string-code))
@@ -76,12 +109,12 @@
  ;; If there is more than one, they won't work right.
  )
 
-(use-package ein
-  :ensure t)
-
 (use-package which-key
   :ensure t
-  :config (which-key-mode))
+  :delight
+  :hook (after-init . which-key-mode)
+  :config
+  (setq which-key-idle-delay 0.0))
 
 ;; Bootstrap `use-package'
 (unless (package-installed-p 'use-package)
@@ -104,6 +137,9 @@
 
 ;; IPython set up
 (setq jedi:complete-on-dot t)                 ; optional
+
+;; (use-package lsp-mode
+;;   :ensure t)
 
 (setq
  python-shell-interpreter "ipython"
@@ -136,3 +172,11 @@
     (ac-config-default)
     (global-auto-complete-mode 1)
     ))
+
+
+(global-set-key (kbd "C->") 'indent-rigidly-right-to-tab-stop)
+(global-set-key (kbd "C-<") 'indent-rigidly-left-to-tab-stop)
+
+(setq tab-width 4)
+(setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80))
+(setq indent-tabs-mode nil)
