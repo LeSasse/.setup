@@ -1,5 +1,4 @@
-;;
-(setq inhibit-startup-message t)
+;;setq inhibit-startup-message t)
 (tool-bar-mode -1)                       ;; no tool bar
 (horizontal-scroll-bar-mode -1)          ;; no horizontal toolbar
 (scroll-bar-mode -1 )                    ;; no scroll bar
@@ -30,6 +29,14 @@
 (use-package magit
   :ensure t
   :pin melpa-stable)
+
+;; YAML support
+(use-package yaml-mode
+  :ensure t
+  :hook
+  (yaml-mode . (lambda () (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+  :config
+  (add-to-list 'auto-mode-alist '("\\.yml\\'". yaml-mode)))
 
 ;; Format code as per black code formatter rules
 (use-package blacken
@@ -96,8 +103,17 @@
    '("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" default))
  '(package-selected-packages
    '(lsp-mode magit color-theme-sanityinc-tomorrow linum-relative gruvbox-theme org-bullets which-key try use-package))
+ '(warning-suppress-log-types
+   '(((defvaralias losing-value python-shell-completion-module-string-code))
+     ((defvaralias losing-value python-shell-completion-module-string-code))
+     (comp)
+     ((defvaralias losing-value python-shell-completion-module-string-code))
+     ((defvaralias losing-value python-shell-completion-module-string-code))
+     ((defvaralias losing-value python-shell-completion-module-string-code))
+     ((defvaralias losing-value python-shell-completion-module-string-code))))
  '(warning-suppress-types
-   '((comp)
+   '(((defvaralias losing-value python-shell-completion-module-string-code))
+     (comp)
      ((defvaralias losing-value python-shell-completion-module-string-code))
      ((defvaralias losing-value python-shell-completion-module-string-code))
      ((defvaralias losing-value python-shell-completion-module-string-code))
@@ -138,26 +154,21 @@
 ;; IPython set up
 (setq jedi:complete-on-dot t)                 ; optional
 
-;; (use-package lsp-mode
-;;   :ensure t)
+(use-package lsp-mode
+   :ensure t)
 
 (setq
  python-shell-interpreter "ipython"
  python-shell-interpreter-args "--colors=Linux --profile=default --simple-prompt"
  python-shell-prompt-regexp "In \\[[0-9]+\\]: "
- python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
- python-shell-completion-setup-code
- "from IPython.core.completerlib import module_completion"
- python-shell-completion-module-string-code
- "';'.join(module_completion('''%s'''))\n"
- python-shell-completion-string-code
- "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
-
+ python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: ")
 
 (defalias 'list-buffers 'ibuffer)
 
 (global-display-line-numbers-mode)
 (global-display-fill-column-indicator-mode)
+(setq-default fill-column 80)
+(setq fci-rule-width 10)
 
 (setq projectile-mode-line "Projectile")
 
@@ -180,3 +191,68 @@
 (setq tab-width 4)
 (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80))
 (setq indent-tabs-mode nil)
+
+;; Modeline
+(line-number-mode 1)     ;; line numbers in modeline
+(column-number-mode 1)   ;; column number in modeline
+(display-time-mode 1)    ;; display time in modeline
+(size-indication-mode 1) ;; display file size in modeline
+
+;; Buffer
+(global-prettify-symbols-mode 1)           ;; prettify symbols like lambda
+(delete-selection-mode 1)                  ;; delete content while typing in marked region
+(global-auto-revert-mode 1)                ;; auto-revert buffer from file on disk
+(global-visual-line-mode 1)                ;; display visual line features like wrapping
+
+;;; Personal preferences
+(setq create-lockfiles nil             ;; no lockfiles
+      make-backup-files nil            ;; no backup files
+      scroll-error-top-bottom t        ;; no error while scrolling past the window
+      )
+
+;; Fancy icons
+(use-package all-the-icons
+  :if (display-graphic-p)
+  :ensure t)
+
+
+;; Dashboard for emacs
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook)
+  (setq dashboard-startup-banner 'logo                  ;; use logo for banner
+        dashboard-set-navigator t                       ;; show navigator
+        dashboard-items '((recents . 5) (projects . 5)) ;; restrict recents and projects to 5
+        dashboard-set-heading-icons t                   ;; show icons
+        dashboard-set-file-icons t                      ;; show file icons
+        dashboard-navigator-buttons                     ;; customize navigator buttons
+        ;; Format: "(icon title help action face prefix suffix)"
+        `(;; line1
+          ((,(all-the-icons-faicon "repeat" :height 1.0 :v-adjust 0.0)
+            "Update"
+            "Update packages"
+            (lambda (&rest _) (auto-package-update-now)))
+           (,(all-the-icons-faicon "refresh" :height 1.0 :v-adjust 0.0)
+            "Restart"
+            "Restart Emacs"
+            (lambda (&rest _) (restart-emacs)))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; LSP (Language Server Protocol) support
+;; LSP support via lsp-mode
+(use-package lsp-mode
+  :ensure t
+  :hook (
+         (lsp-mode . lsp-enable-which-key-integration) ;; enable which-key integration
+         (prog-mode . lsp-deferred))  ;; automatically start 'lsp' for programming
+  :commands (lsp lsp-deferred)
+  :config
+  ;; prefix for lsp-command-keymap
+  (setq lsp-keymap-prefix "C-c l")
+  ;; don't warn for no client found
+  (setq lsp-warn-no-matched-clients nil))
+
+;; LSP for Python
+(use-package lsp-pyright
+  :ensure t
+  :hook (python-mode . lsp-deferred))
