@@ -70,7 +70,6 @@ alias ll='ls -l'
 alias lsa='ls -a'
 alias lla='ll -a'
 alias mricrogl='MRIcroGL'
-alias emacs='emacs -fs'
 
 if [ "$(command -v helix)" ]; then
 	alias hx='helix'
