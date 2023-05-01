@@ -186,6 +186,18 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Rust related packages
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(use-package rust-mode
+  :ensure t)
+
+(use-package ob-rust
+  :ensure t)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; mark up languages (yes, that includes YAML)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -204,10 +216,30 @@
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
+(use-package typescript-mode
+  :ensure t)
 
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((python . t)))
+ '((python . t)
+   (rust . t)
+   ))
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((typescript . t)
+   ))
+
+(use-package ob-mermaid
+  :ensure t)
+
+(org-babel-do-load-languages
+    'org-babel-load-languages
+    '((mermaid . t)
+      (scheme . t)))
+    
+(setq ob-mermaid-cli-path "/usr/local/bin/mmdc")
+(setq mermaid-config-file "~/.config/mermaid/config.json")
 
 ;; dont even know where to put this
 (setq tab-width 4)
@@ -268,6 +300,8 @@
 (global-set-key (kbd "C->") 'indent-rigidly-right-to-tab-stop)
 (global-set-key (kbd "C-<") 'indent-rigidly-left-to-tab-stop)
 
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c C-l") 'org-insert-link)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; just dump this at the bottom
@@ -283,7 +317,7 @@
  '(custom-safe-themes
    '("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" default))
  '(package-selected-packages
-   '(lsp-pyright lsp-mode magit color-theme-sanityinc-tomorrow linum-relative gruvbox-theme org-bullets which-key try use-package))
+   '(svg-lib lsp-pyright lsp-mode magit color-theme-sanityinc-tomorrow linum-relative gruvbox-theme org-bullets which-key try use-package))
  '(warning-suppress-log-types
    '(((defvaralias losing-value python-shell-completion-module-string-code))
      ((defvaralias losing-value python-shell-completion-module-string-code))

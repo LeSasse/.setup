@@ -43,4 +43,8 @@ ln -svf ${configs_path}/helix/languages.toml ${HOME}/.config/helix/languages.tom
 # emacs
 ln -svf ${configs_path}/emacs ${HOME}/.emacs
 
+# mermaid
+mkdir -p ${HOME}/config/mermaid
+ln -svf ${configs_path}/mermaid.json ${HOME}/config/mermaid/config.json
+
 echo 'Done!'
